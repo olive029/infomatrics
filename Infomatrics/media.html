@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Literacy - Infomatrics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            color: #2e8b57;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .back-btn {
+            color: #2e8b57;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .back-btn::before {
+            content: "←";
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .topic-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #2e8b57, #4CAF50);
+        }
+
+        .topic-icon {
+            font-size: 3rem;
+            color: #2e8b57;
+            margin-bottom: 1rem;
+        }
+
+        .topic-title {
+            color: #2e8b57;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .topic-description {
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-section h2 {
+            color: #2e8b57;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .subtopic-buttons {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .subtopic-btn {
+            display: block;
+            padding: 1rem 1.5rem;
+            background-color: #2e8b57;
+            color: white;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(46, 139, 87, 0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .subtopic-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(46, 139, 87, 0.4);
+            background-color: #3cb371;
+        }
+
+        /* Subtopic pages styling */
+        .subtopic-page {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .subtopic-page.active {
+            display: block;
+        }
+
+        .subtopic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .subtopic-title {
+            color: #2e8b57;
+            font-size: 1.5rem;
+        }
+
+        .close-subtopic {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-subtopic:hover {
+            color: #2e8b57;
+        }
+
+        .subtopic-content ul {
+            margin-left: 2rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .subtopic-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .quiz-container.active {
+            display: block;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .quiz-title {
+            color: #2e8b57;
+            font-size: 1.5rem;
+        }
+
+        .close-quiz {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-quiz:hover {
+            color: #2e8b57;
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .quiz-question.active {
+            display: block;
+        }
+
+        .quiz-question h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem;
+            background-color: #f5f5f5;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background-color: #e8f5e9;
+        }
+
+        .quiz-option input {
+            cursor: pointer;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        .quiz-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .quiz-btn:hover {
+            background-color: #3cb371;
+        }
+
+        .quiz-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .quiz-submit {
+            display: none;
+            width: 100%;
+            padding: 1rem;
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .quiz-submit:hover {
+            background-color: #3cb371;
+        }
+
+        .quiz-submit.active {
+            display: block;
+        }
+
+        .quiz-result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .quiz-result.correct {
+            background-color: #e8f5e9;
+            color: #2e8b57;
+        }
+
+        .quiz-result.incorrect {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .quiz-score {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #2e8b57;
+            display: none;
+        }
+
+        .challenge-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .challenge-btn:hover {
+            background-color: #3cb371;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .subtopic-buttons {
+                position: static;
+                margin-top: 2rem;
+                flex-direction: row;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .subtopic-btn {
+                padding: 0.8rem 1.2rem;
+                border-radius: 6px;
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="index.html" class="logo">INFOMATRICS</a>
+            <p class="tagline">Your Civic Education Companion</p>
+        </div>
+        <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+    </header>
+
+    <main>
+        <div class="topic-header">
+            <div class="topic-icon">📰</div>
+            <h1 class="topic-title">Media Literacy</h1>
+            <p class="topic-description">Develop critical skills to navigate today's complex information landscape and identify credible sources.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Understanding Media Literacy</h2>
+            <p>Media literacy is the ability to access, analyze, evaluate, create, and act using all forms of communication. In our digital age, it's essential for making informed decisions and participating effectively in civic life.</p>
+            <p>This section will help you develop the critical thinking skills needed to navigate the modern media environment, distinguish fact from fiction, and become a more informed consumer and creator of media content.</p>
+            
+            <button class="challenge-btn" onclick="startQuiz()">Take the Media Literacy Challenge</button>
+        </div>
+
+        <div class="content-section">
+            <h2>Why It Matters</h2>
+            <p>Media literacy is crucial because:</p>
+            <ul class="subtopic-content">
+                <li>We're exposed to more information than ever before</li>
+                <li>Misinformation spreads rapidly online</li>
+                <li>Media influences our perceptions and decisions</li>
+                <li>Democracy depends on informed citizens</li>
+                <li>It empowers critical thinking and digital citizenship</li>
+            </ul>
+        </div>
+
+        <!-- Subtopic: Identifying Fake News -->
+        <div id="fake-news" class="subtopic-page">
+            <div class="subtopic-header">
+                <h2 class="subtopic-title">Identifying Fake News</h2>
+                <button class="close-subtopic" onclick="closeSubtopic('fake-news')">×</button>
+            </div>
+            <div class="subtopic-content">
+                <p>Fake news refers to false or misleading information presented as news. Here's how to spot it:</p>
+                <ul>
+                    <li><strong>Check the source:</strong> Look at the URL, about page, and other articles from the same source</li>
+                    <li><strong>Read beyond headlines:</strong> Sensational headlines often don't match the actual content</li>
+                    <li><strong>Verify authors:</strong> Are they real? Do they have expertise?</li>
+                    <li><strong>Check dates:</strong> Old stories might be repurposed to mislead</li>
+                    <li><strong>Examine evidence:</strong> Credible stories link to facts, quotes experts, and provide data</li>
+                    <li><strong>Look at other sources:</strong> Are reputable news outlets reporting the same?</li>
+                    <li><strong>Check your biases:</strong> Are you believing this because it aligns with your views?</li>
+                </ul>
+                <p>Tools like fact-checking websites (Snopes, FactCheck.org) can help verify suspicious claims.</p>
+            </div>
+        </div>
+
+        <!-- Subtopic: Effects of Misinformation -->
+        <div id="misinformation" class="subtopic-page">
+            <div class="subtopic-header">
+                <h2 class="subtopic-title">Effects of Misinformation</h2>
+                <button class="close-subtopic" onclick="closeSubtopic('misinformation')">×</button>
+            </div>
+            <div class="subtopic-content">
+                <p>Misinformation can have serious consequences on individuals and society:</p>
+                <ul>
+                    <li><strong>Public health risks:</strong> False medical advice can endanger lives</li>
+                    <li><strong>Political polarization:</strong> Can deepen divisions and undermine democracy</li>
+                    <li><strong>Financial harm:</strong> Fake investment opportunities can lead to losses</li>
+                    <li><strong>Reputation damage:</strong> False claims can ruin individuals or organizations</li>
+                    <li><strong>Erosion of trust:</strong> Undermines confidence in institutions and media</li>
+                    <li><strong>Violence:</strong> Can incite hatred or dangerous actions</li>
+                </ul>
+                <p>Combatting misinformation requires media literacy education, responsible sharing habits, and support for quality journalism.</p>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quizContainer" class="quiz-container">
+            <div class="quiz-header">
+                <h2 class="quiz-title">Media Literacy Challenge</h2>
+                <button class="close-quiz" onclick="closeQuiz()">×</button>
+            </div>
+            
+            <div id="quizQuestion1" class="quiz-question active">
+                <h3>1. What is the first step you should take when evaluating a news source?</h3>
+                <div class="quiz-options">
+                    <label class="quiz-option">
+                        <input type="radio" name="q1" value="a"> Check how many shares it has
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q1" value="b"> Examine the source's credibility
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q1" value="c"> See if your friends believe it
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q1" value="d"> Check if it confirms your existing beliefs
+                    </label>
+                </div>
+                <div class="quiz-result" id="result-q1"></div>
+            </div>
+            
+            <div id="quizQuestion2" class="quiz-question">
+                <h3>2. Which of these is NOT a common characteristic of fake news?</h3>
+                <div class="quiz-options">
+                    <label class="quiz-option">
+                        <input type="radio" name="q2" value="a"> Sensational headlines
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q2" value="b"> Lack of credible sources
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q2" value="c"> Poor grammar and spelling
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q2" value="d"> Multiple reputable outlets reporting the same facts
+                    </label>
+                </div>
+                <div class="quiz-result" id="result-q2"></div>
+            </div>
+            
+            <div id="quizQuestion3" class="quiz-question">
+                <h3>3. What is one of the most serious potential consequences of misinformation?</h3>
+                <div class="quiz-options">
+                    <label class="quiz-option">
+                        <input type="radio" name="q3" value="a"> Increased social media engagement
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q3" value="b"> Public health risks
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q3" value="c"> More colorful news feeds
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q3" value="d"> Increased smartphone sales
+                    </label>
+                </div>
+                <div class="quiz-result" id="result-q3"></div>
+            </div>
+            
+            <div id="quizQuestion4" class="quiz-question">
+                <h3>4. When checking a news story's credibility, what should you examine?</h3>
+                <div class="quiz-options">
+                    <label class="quiz-option">
+                        <input type="radio" name="q4" value="a"> Only the headline
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q4" value="b"> The evidence and sources provided
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q4" value="c"> How many ads are on the page
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q4" value="d"> The website's color scheme
+                    </label>
+                </div>
+                <div class="quiz-result" id="result-q4"></div>
+            </div>
+            
+            <div id="quizQuestion5" class="quiz-question">
+                <h3>5. What is a recommended way to combat misinformation?</h3>
+                <div class="quiz-options">
+                    <label class="quiz-option">
+                        <input type="radio" name="q5" value="a"> Share everything you see online
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q5" value="b"> Only trust information that confirms your beliefs
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q5" value="c"> Verify information before sharing
+                    </label>
+                    <label class="quiz-option">
+                        <input type="radio" name="q5" value="d"> Avoid all news sources
+                    </label>
+                </div>
+                <div class="quiz-result" id="result-q5"></div>
+            </div>
+            
+            <div class="quiz-navigation">
+                <button class="quiz-btn" id="prevBtn" onclick="prevQuestion()" disabled>Previous</button>
+                <button class="quiz-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+            </div>
+            
+            <button type="button" class="quiz-submit" id="submitQuiz" onclick="submitQuiz()">Submit Answers</button>
+            
+            <div class="quiz-score" id="quizScore"></div>
+        </div>
+
+        <div class="subtopic-buttons">
+            <a href="#" class="subtopic-btn" onclick="openSubtopic('fake-news'); return false;">Identifying Fake News</a>
+            <a href="#" class="subtopic-btn" onclick="openSubtopic('misinformation'); return false;">Effects of Misinformation</a>
+        </div>
+    </main>
+
+    <script>
+        // Subtopic functionality
+        function openSubtopic(subtopicId) {
+            // Hide all subtopic pages first
+            document.querySelectorAll('.subtopic-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected subtopic
+            const subtopic = document.getElementById(subtopicId);
+            if (subtopic) {
+                subtopic.classList.add('active');
+                subtopic.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function closeSubtopic(subtopicId) {
+            const subtopic = document.getElementById(subtopicId);
+            if (subtopic) {
+                subtopic.classList.remove('active');
+                // Scroll back to the top of the main content
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Quiz functionality
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+        const answers = {
+            q1: 'b', // Examine the source's credibility
+            q2: 'd', // Multiple reputable outlets reporting the same facts
+            q3: 'b', // Public health risks
+            q4: 'b', // The evidence and sources provided
+            q5: 'c'  // Verify information before sharing
+        };
+        let userAnswers = {};
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById('quizContainer').classList.add('active');
+            window.scrollTo({ top: document.getElementById('quizContainer').offsetTop, behavior: 'smooth' });
+            resetQuiz();
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizContainer').classList.remove('active');
+            resetQuiz();
+        }
+
+        function resetQuiz() {
+            currentQuestion = 1;
+            userAnswers = {};
+            score = 0;
+            
+            // Hide all questions except first
+            document.querySelectorAll('.quiz-question').forEach((q, index) => {
+                q.classList.remove('active');
+                if (index === 0) q.classList.add('active');
+            });
+            
+            // Reset navigation buttons
+            document.getElementById('prevBtn').disabled = true;
+            document.getElementById('nextBtn').disabled = false;
+            document.getElementById('submitQuiz').classList.remove('active');
+            
+            // Clear all selections and results
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.checked = false;
+            });
+            document.querySelectorAll('.quiz-result').forEach(result => {
+                result.style.display = 'none';
+            });
+            document.getElementById('quizScore').style.display = 'none';
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                // Save answer
+                const selectedOption = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+                if (selectedOption) {
+                    userAnswers[`q${currentQuestion}`] = selectedOption.value;
+                }
+                
+                // Hide current question
+                document.getElementById(`quizQuestion${currentQuestion}`).classList.remove('active');
+                
+                // Show next question
+                currentQuestion++;
+                document.getElementById(`quizQuestion${currentQuestion}`).classList.add('active');
+                
+                // Update navigation buttons
+                document.getElementById('prevBtn').disabled = false;
+                if (currentQuestion === totalQuestions) {
+                    document.getElementById('nextBtn').disabled = true;
+                    document.getElementById('submitQuiz').classList.add('active');
+                }
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                // Hide current question
+                document.getElementById(`quizQuestion${currentQuestion}`).classList.remove('active');
+                
+                // Show previous question
+                currentQuestion--;
+                document.getElementById(`quizQuestion${currentQuestion}`).classList.add('active');
+                
+                // Update navigation buttons
+                document.getElementById('nextBtn').disabled = false;
+                document.getElementById('submitQuiz').classList.remove('active');
+                if (currentQuestion === 1) {
+                    document.getElementById('prevBtn').disabled = true;
+                }
+            }
+        }
+
+        function submitQuiz() {
+            // Save last answer
+            const selectedOption = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+            if (selectedOption) {
+                userAnswers[`q${currentQuestion}`] = selectedOption.value;
+            }
+            
+            // Calculate score
+            score = 0;
+            for (let i = 1; i <= totalQuestions; i++) {
+                if (userAnswers[`q${i}`] === answers[`q${i}`]) {
+                    score++;
+                    document.getElementById(`result-q${i}`).textContent = 'Correct!';
+                    document.getElementById(`result-q${i}`).className = 'quiz-result correct';
+                } else {
+                    document.getElementById(`result-q${i}`).textContent = 'Incorrect!';
+                    document.getElementById(`result-q${i}`).className = 'quiz-result incorrect';
+                }
+                document.getElementById(`result-q${i}`).style.display = 'block';
+            }
+            
+            // Show all questions
+            document.querySelectorAll('.quiz-question').forEach(q => {
+                q.classList.add('active');
+            });
+            
+            // Show score
+            document.getElementById('quizScore').textContent = `You scored ${score} out of ${totalQuestions}! ${getScoreFeedback(score)}`;
+            document.getElementById('quizScore').style.display = 'block';
+            
+            // Hide navigation and submit button
+            document.querySelector('.quiz-navigation').style.display = 'none';
+            document.getElementById('submitQuiz').style.display = 'none';
+            
+            // Scroll to top of quiz
+            document.getElementById('quizContainer').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function getScoreFeedback(score) {
+            if (score === totalQuestions) return 'Perfect! You have excellent media literacy skills!';
+            if (score >= totalQuestions * 0.8) return 'Great job! You understand media literacy well.';
+            if (score >= totalQuestions * 0.6) return 'Good effort! Review the material to improve.';
+            if (score >= totalQuestions * 0.4) return 'Keep learning about media literacy!';
+            return 'Review the material and try again!';
+        }
+
+        // Close subtopic when clicking outside (optional)
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.subtopic-page') && !e.target.closest('.subtopic-btn')) {
+                document.querySelectorAll('.subtopic-page').forEach(page => {
+                    page.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
