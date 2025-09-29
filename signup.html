@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infomatrics - Sign Up</title>
+    <style>
+        /* Reuse the same styles from login page for consistency */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            color: #2e8b57;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .signup-container {
+            max-width: 450px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .signup-header h2 {
+            color: #2e8b57;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .signup-header p {
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2e8b57;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #267349;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .login-link {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .login-link a {
+            color: #2e8b57;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #d9534f;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 5px;
+            background-color: #eee;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .strength-weak { background-color: #ff4d4d; }
+        .strength-medium { background-color: #ffa64d; }
+        .strength-strong { background-color: #2e8b57; }
+
+        .strength-text {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        footer {
+            background-color: #2e8b57;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .signup-container {
+                margin: 2rem 1rem;
+                padding: 1.5rem;
+            }
+
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <h1 class="logo">INFOMATRICS</h1>
+            <p class="tagline">Your Civic Education Companion</p>
+        </div>
+    </header>
+
+    <div class="signup-container">
+        <div class="signup-header">
+            <h2>Create Account</h2>
+            <p>Join Infomatrics to access civic education resources</p>
+        </div>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+                <div id="nameError" class="error-message">Please enter your name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <div id="emailError" class="error-message">Please enter a valid email address</div>
+                <div id="emailExistsError" class="error-message">An account with this email already exists</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Create a password" required minlength="6">
+                <div class="password-strength">
+                    <div id="strengthMeter" class="strength-meter"></div>
+                </div>
+                <div id="strengthText" class="strength-text"></div>
+                <div id="passwordError" class="error-message">Password must be at least 6 characters</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                <div id="confirmPasswordError" class="error-message">Passwords don't match</div>
+            </div>
+
+            <button type="submit" class="btn btn-block">Create Account</button>
+
+            <div class="login-link">
+                Already have an account? <a href="login.html">Log in</a>
+            </div>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Infomatrics. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupForm = document.getElementById('signupForm');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const emailExistsError = document.getElementById('emailExistsError');
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            const strengthMeter = document.getElementById('strengthMeter');
+            const strengthText = document.getElementById('strengthText');
+
+            // Initialize database if it doesn't exist
+            function initializeDatabase() {
+                if (!localStorage.getItem('userDatabase')) {
+                    const defaultUsers = [
+                        { id: 1, email: 'user1@example.com', password: 'SecurePass1!', name: 'User One' },
+                        { id: 2, email: 'user2@example.com', password: 'StrongPwd2@', name: 'User Two' },
+                        { id: 3, email: 'user3@example.com', password: 'Complex3#Pass', name: 'User Three' },
+                        { id: 4, email: 'user4@example.com', password: 'Safe4$Word', name: 'User Four' },
+                        { id: 5, email: 'user5@example.com', password: 'Good5^Password', name: 'User Five' }
+                    ];
+                    localStorage.setItem('userDatabase', JSON.stringify(defaultUsers));
+                }
+            }
+
+            // Check if email already exists
+            function emailExists(email) {
+                const users = JSON.parse(localStorage.getItem('userDatabase')) || [];
+                return users.some(user => user.email === email);
+            }
+
+            // Password strength checker
+            function checkPasswordStrength(password) {
+                let strength = 0;
+                
+                if (password.length >= 8) strength += 1;
+                if (password.length >= 12) strength += 1;
+                if (/[A-Z]/.test(password)) strength += 1;
+                if (/[a-z]/.test(password)) strength += 1;
+                if (/[0-9]/.test(password)) strength += 1;
+                if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+                
+                return strength;
+            }
+
+            // Update password strength meter
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                const strength = checkPasswordStrength(password);
+                
+                if (password.length === 0) {
+                    strengthMeter.style.width = '0%';
+                    strengthText.textContent = '';
+                } else {
+                    let width = 0;
+                    let text = '';
+                    let className = '';
+                    
+                    if (strength <= 2) {
+                        width = 33;
+                        text = 'Weak';
+                        className = 'strength-weak';
+                    } else if (strength <= 4) {
+                        width = 66;
+                        text = 'Medium';
+                        className = 'strength-medium';
+                    } else {
+                        width = 100;
+                        text = 'Strong';
+                        className = 'strength-strong';
+                    }
+                    
+                    strengthMeter.style.width = width + '%';
+                    strengthMeter.className = 'strength-meter ' + className;
+                    strengthText.textContent = 'Strength: ' + text;
+                }
+            });
+
+            // Form submission
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Reset errors
+                nameError.style.display = 'none';
+                emailError.style.display = 'none';
+                emailExistsError.style.display = 'none';
+                passwordError.style.display = 'none';
+                confirmPasswordError.style.display = 'none';
+                
+                let isValid = true;
+                
+                // Validate name
+                if (!nameInput.value.trim()) {
+                    nameError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate email
+                if (!emailInput.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                    emailError.style.display = 'block';
+                    isValid = false;
+                } else if (emailExists(emailInput.value)) {
+                    emailExistsError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate password
+                if (!passwordInput.value || passwordInput.value.length < 6) {
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate password confirmation
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    confirmPasswordError.style.display = 'block';
+                    isValid = false;
+                }
+                
+                if (isValid) {
+                    // Create new user
+                    const users = JSON.parse(localStorage.getItem('userDatabase')) || [];
+                    const newId = users.length > 0 ? Math.max(...users.map(user => user.id)) + 1 : 1;
+                    
+                    const newUser = {
+                        id: newId,
+                        name: nameInput.value.trim(),
+                        email: emailInput.value,
+                        password: passwordInput.value
+                    };
+                    
+                    users.push(newUser);
+                    localStorage.setItem('userDatabase', JSON.stringify(users));
+                    
+                    // Auto-login the new user
+                    localStorage.setItem('isAuthenticated', 'true');
+                    localStorage.setItem('userEmail', newUser.email);
+                    localStorage.setItem('userName', newUser.name);
+                    localStorage.setItem('userId', newUser.id);
+                    
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                }
+            });
+
+            // Initialize database
+            initializeDatabase();
+        });
+    </script>
+</body>
+</html>
